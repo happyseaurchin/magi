@@ -23,11 +23,16 @@ HTTP_PORT = 8080
 
 # File lock for shell-2.json access
 _shell_lock = threading.Lock()
+_log_file = None
 
 
 def log(msg):
     ts = time.strftime("%Y-%m-%d %H:%M:%S")
-    print(f"[{ts}] {msg}", flush=True)
+    line = f"[{ts}] {msg}"
+    print(line, flush=True)
+    if _log_file:
+        _log_file.write(line + "\n")
+        _log_file.flush()
 
 
 # --- Block I/O ---
@@ -285,9 +290,11 @@ def cycle():
         log(f"Network error: {e}")
         return
 
+    log(f"Raw ({len(raw)} chars): {raw[:300]}")
+
     updated = extract_json(raw)
     if updated is None:
-        log(f"REJECT: no valid JSON: {raw[:200]}")
+        log(f"REJECT: no valid JSON")
         return
 
     if not is_pscale_valid(updated):
@@ -306,6 +313,7 @@ def cycle():
     else:
         summary = str(concern)[:120]
     log(f"Concern: {summary}")
+    log(f"Shell: {json.dumps(updated, indent=2)}")
 
 
 def main():
@@ -324,7 +332,10 @@ def main():
     http_thread = threading.Thread(target=start_http_server, daemon=True)
     http_thread.start()
 
-    log(f"Kernel-2 starting. Interval: {interval}s. Cycles: {max_cycles or 'unlimited'}")
+    global _log_file
+    log_name = f"kernel2-{time.strftime('%Y%m%d-%H%M%S')}.log"
+    _log_file = open(log_name, "w")
+    log(f"Kernel-2 starting. Interval: {interval}s. Cycles: {max_cycles or 'unlimited'}. Log: {log_name}")
 
     n = 0
     while max_cycles == 0 or n < max_cycles:

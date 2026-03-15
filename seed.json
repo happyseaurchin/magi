@@ -1,0 +1,13 @@
+{
+  "_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names.",
+  "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys — only _ and digits.",
+  "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.",
+  "3": {
+    "_": "Concern. Rewrite this whole section each cycle to reflect current state.",
+    "1": "State: first wake. Block is seed-state.",
+    "2": "Gap: key 4 is empty, needs a purpose.",
+    "3": "Next: write a purpose at key 4, then rewrite this concern to match what changed."
+  },
+  "4": "",
+  "5": ""
+}

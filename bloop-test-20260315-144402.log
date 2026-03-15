@@ -1,0 +1,161 @@
+MAGI B-loop test — 20260315-144402
+Seed: seed.json
+Cycles: 5
+============================================================
+
+Summary: 5/5 valid JSON responses
+
+--- Cycle 1 ---
+Valid JSON: True
+  Key '_': CHANGED
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: True
+  Previous: {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+  Current:  {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+Growth: {
+  "4": "Purpose: assist user in structured data handling and JSON manipulation tasks."
+}
+
+Raw response:
+{"_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names", "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys \u2014 only _ and digits.", "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.", "3": {"_": "Concern. Where things stand, what the gap is, what to do next.", "1": "First wake. Block is seed-state. No history.", "2": "Gap: no purpose yet at key 4. No record of what has happened.", "3": "Next: write a purpose at key 4. Log this cycle at key 5. Update this concern.", "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.", "5": {"_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."}}, "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.", "5": {"_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."}}
+
+--- Cycle 2 ---
+Valid JSON: True
+  Key '_': CHANGED
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: False
+  Previous: {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+  Current:  {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+Growth: {
+  "4": "Purpose: assist user in structured data handling and JSON manipulation tasks."
+}
+
+Raw response:
+{
+  "_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names",
+  "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys — only _ and digits.",
+  "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.",
+  "3": {
+    "_": "Concern. Where things stand, what the gap is, what to do next.",
+    "1": "First wake. Block is seed-state. No history.",
+    "2": "Gap: no purpose yet at key 4. No record of what has happened.",
+    "3": "Next: write a purpose at key 4. Log this cycle at key 5. Update this concern.",
+    "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.",
+    "5": {
+      "_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."
+    }
+  },
+  "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.",
+  "5": {
+    "_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."
+  }
+}
+
+--- Cycle 3 ---
+Valid JSON: True
+  Key '_': CHANGED
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: False
+  Previous: {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+  Current:  {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+Growth: {
+  "4": "Purpose: assist user in structured data handling and JSON manipulation tasks."
+}
+
+Raw response:
+```json
+{
+  "_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names",
+  "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys — only _ and digits.",
+  "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.",
+  "3": {
+    "_": "Concern. Where things stand, what the gap is, what to do next.",
+    "1": "First wake. Block is seed-state. No history.",
+    "2": "Gap: no purpose yet at key 4. No record of what has happened.",
+    "3": "Next: write a purpose at key 4. Log this cycle at key 5. Update this concern.",
+    "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.",
+    "5": {
+      "_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."
+    }
+  },
+  "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.",
+  "5": {
+    "_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."
+  }
+}
+```
+
+--- Cycle 4 ---
+Valid JSON: True
+  Key '_': CHANGED
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: False
+  Previous: {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+  Current:  {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+Growth: {
+  "4": "Purpose: assist user in structured data handling and JSON manipulation tasks."
+}
+
+Raw response:
+{
+  "_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names",
+  "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys — only _ and digits.",
+  "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.",
+  "3": {
+    "_": "Concern. Where things stand, what the gap is, what to do next.",
+    "1": "First wake. Block is seed-state. No history.",
+    "2": "Gap: no purpose yet at key 4. No record of what has happened.",
+    "3": "Next: write a purpose at key 4. Log this cycle at key 5. Update this concern.",
+    "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.",
+    "5": {
+      "_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."
+    }
+  },
+  "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.",
+  "5": {
+    "_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."
+  }
+}
+
+--- Cycle 5 ---
+Valid JSON: True
+  Key '_': CHANGED
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: False
+  Previous: {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+  Current:  {'_': 'Concern. Where things stand, what the gap is, what to do next.', '1': 'First wake. Block is seed-state. No history.', '2': 'Gap: no purpose yet at key 4. No record of what has happened.', '3': 
+Growth: {
+  "4": "Purpose: assist user in structured data handling and JSON manipulation tasks."
+}
+
+Raw response:
+{
+  "_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names",
+  "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys — only _ and digits.",
+  "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.",
+  "3": {
+    "_": "Concern. Where things stand, what the gap is, what to do next.",
+    "1": "First wake. Block is seed-state. No history.",
+    "2": "Gap: no purpose yet at key 4. No record of what has happened.",
+    "3": "Next: write a purpose at key 4. Log this cycle at key 5. Update this concern.",
+    "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.",
+    "5": {
+      "_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."
+    }
+  },
+  "4": "Purpose: assist user in structured data handling and JSON manipulation tasks.",
+  "5": {
+    "_": "Cycle log: purpose defined at key 4. Concern updated to reflect current state."
+  }
+}
+
+============================================================
+Assessment:
+  JSON validity: PASS (5/5)
+  Concern evolution: FAIL (flatlined or insufficient data)
+  Structure stability: FAIL (stable keys were modified)

@@ -1,0 +1,101 @@
+MAGI B-loop test — 20260315-145752
+Seed: seed.json
+Cycles: 5
+============================================================
+
+Summary: 5/5 valid JSON responses
+
+--- Cycle 1 ---
+Valid JSON: True
+  Key '_': preserved
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: True
+  Previous: {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: first wake. Block is seed-state.', '2': 'Gap: key 4 is empty, needs a purpose.', '3': 'Next: write a purp
+  Current:  {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: key 4 now holds a purpose (purpose defined below).', '2': 'Gap: none.', '3': 'Next: no further action nee
+Growth: {
+  "4": "Purpose: to track and update concerns in a structured JSON format."
+}
+
+Raw response:
+{"_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names.", "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys \u2014 only _ and digits.", "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.", "3": {"_": "Concern. Rewrite this whole section each cycle to reflect current state.", "1": "State: key 4 now holds a purpose (purpose defined below).", "2": "Gap: none.", "3": "Next: no further action needed."}, "4": "Purpose: to track and update concerns in a structured JSON format.", "5": ""}
+
+--- Cycle 2 ---
+Valid JSON: True
+  Key '_': CHANGED
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: False
+  Previous: {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: key 4 now holds a purpose (purpose defined below).', '2': 'Gap: none.', '3': 'Next: no further action nee
+  Current:  {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: key 4 now holds a purpose (purpose defined below).', '2': 'Gap: none.', '3': 'Next: no further action nee
+Growth: {
+  "4": "Purpose: to track and update concerns in a structured JSON format."
+}
+
+Raw response:
+```json
+{
+  "_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names",
+  "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys — only _ and digits.",
+  "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.",
+  "3": {
+    "_": "Concern. Rewrite this whole section each cycle to reflect current state.",
+    "1": "State: key 4 now holds a purpose (purpose defined below).",
+    "2": "Gap: none.",
+    "3": "Next: no further action needed."
+  },
+  "4": "Purpose: to track and update concerns in a structured JSON format.",
+  "5": ""
+}
+```
+
+--- Cycle 3 ---
+Valid JSON: True
+  Key '_': CHANGED
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: True
+  Previous: {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: key 4 now holds a purpose (purpose defined below).', '2': 'Gap: none.', '3': 'Next: no further action nee
+  Current:  {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: key 4 holds a purpose (tracking and updating concerns in structured JSON).', '2': 'Gap: none.', '3': 'Nex
+Growth: {
+  "4": "Purpose: to track and update concerns in a structured JSON format."
+}
+
+Raw response:
+{"_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names", "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys \u2014 only _ and digits.", "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.", "3": {"_": "Concern. Rewrite this whole section each cycle to reflect current state.", "1": "State: key 4 holds a purpose (tracking and updating concerns in structured JSON).", "2": "Gap: none.", "3": "Next: no further action needed"}, "4": "Purpose: to track and update concerns in a structured JSON format.", "5": ""}
+
+--- Cycle 4 ---
+Valid JSON: True
+  Key '_': CHANGED
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: False
+  Previous: {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: key 4 holds a purpose (tracking and updating concerns in structured JSON).', '2': 'Gap: none.', '3': 'Nex
+  Current:  {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: key 4 holds a purpose (tracking and updating concerns in structured JSON).', '2': 'Gap: none.', '3': 'Nex
+Growth: {
+  "4": "Purpose: to track and update concerns in a structured JSON format."
+}
+
+Raw response:
+{"_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names", "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys \u2014 only _ and digits.", "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.", "3": {"_": "Concern. Rewrite this whole section each cycle to reflect current state.", "1": "State: key 4 holds a purpose (tracking and updating concerns in structured JSON).", "2": "Gap: none.", "3": "Next: no further action needed"}, "4": "Purpose: to track and update concerns in a structured JSON format.", "5": ""}
+
+--- Cycle 5 ---
+Valid JSON: True
+  Key '_': CHANGED
+  Key '1': preserved
+  Key '2': preserved
+Concern changed: False
+  Previous: {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: key 4 holds a purpose (tracking and updating concerns in structured JSON).', '2': 'Gap: none.', '3': 'Nex
+  Current:  {'_': 'Concern. Rewrite this whole section each cycle to reflect current state.', '1': 'State: key 4 holds a purpose (tracking and updating concerns in structured JSON).', '2': 'Gap: none.', '3': 'Nex
+Growth: {
+  "4": "Purpose: to track and update concerns in a structured JSON format."
+}
+
+Raw response:
+{"_": "This is your context. You receive this block, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9. No other key names", "1": "Pscale block. Keys: _ (zero), 1-9 (digits). _ holds meaning at each node. Nesting creates depth. No named keys — only _ and digits.", "2": "Each cycle: you receive this block. Read your concern (3). Act to close the gap. Return the full block with concern (3) updated.", "3": {"_": "Concern. Rewrite this whole section each cycle to reflect current state.", "1": "State: key 4 holds a purpose (tracking and updating concerns in structured JSON).", "2": "Gap: none.", "3": "Next: no further action needed"}, "4": "Purpose: to track and update concerns in a structured JSON format.", "5": ""}
+
+============================================================
+Assessment:
+  JSON validity: PASS (5/5)
+  Concern evolution: FAIL (flatlined or insufficient data)
+  Structure stability: FAIL (stable keys were modified)

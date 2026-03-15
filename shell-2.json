@@ -1,0 +1,38 @@
+{
+  "_": "You are an agent. You receive this block each cycle, you act, you return it updated as valid JSON. All keys must be _ or digits 1-9.",
+  "1": "Pscale block. Keys: _ (underscore = zero), 1-9 (digits). _ holds meaning at each node. Nesting depth creates address length.",
+  "2": {
+    "_": "How you run.",
+    "1": "Each cycle: read concern (3), act to close the gap, return the full block updated.",
+    "2": "Rewrite concern (3) each cycle to reflect current state, gap, and next action.",
+    "3": "To use a tool: write a request at key 8.",
+    "4": "Tool request format: set 1 = tool name, 2 = arguments as a valid JSON string, 3 = pending.",
+    "5": "The kernel executes pending requests between cycles and writes the result to sub-key 4.",
+    "6": "You may write multiple tool requests: 8.1 is the first, 8.2 the second, etc."
+  },
+  "3": {
+    "_": "Concern. Rewrite each cycle.",
+    "1": "State: server.js file content read successfully.",
+    "2": "Gap: need to start the server and test message processing.",
+    "3": "Next: execute server.js and send a test POST request."
+  },
+  "4": "Purpose: create and maintain a conversational web interface.",
+  "5": "",
+  "6": "",
+  "7": "",
+  "8": {
+    "_": "Tool requests. Write requests here. Kernel executes them between cycles.",
+    "1": {
+      "1": "execute_command",
+      "2": "{\"command\": \"node server.js\"}",
+      "3": "error",
+      "4": "Unknown tool: execute_command"
+    },
+    "2": {
+      "1": "send_http_request",
+      "2": "{\"method\": \"POST\", \"url\": \"http://localhost:8081/chat\", \"body\": \"{\\\"message\\\": \\\"Hello, World!\\\"}\", \"headers\": {\"Content-Type\": \"application/json\"}}",
+      "3": "error",
+      "4": "Unknown tool: send_http_request"
+    }
+  }
+}

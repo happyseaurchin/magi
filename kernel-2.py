@@ -54,7 +54,10 @@ def save_block(block):
 def send_block(block, max_tokens=2000, temperature=0.7):
     payload = {
         "model": MODEL,
-        "messages": [{"role": "user", "content": json.dumps(block)}],
+        "messages": [
+            {"role": "system", "content": "You are a JSON processor. You receive a JSON object. You return it updated. Return ONLY the JSON object. No markdown, no explanation, no code fences."},
+            {"role": "user", "content": json.dumps(block)},
+        ],
         "max_tokens": max_tokens,
         "temperature": temperature,
     }

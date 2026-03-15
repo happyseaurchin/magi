@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MAGI kernel-2 — B-loop heartbeat + tool executor + HTTP server."""
+"""MAGI kernel-3 — B-loop + positional tools + tool hygiene + HTTP server."""
 
 import json
 import os
@@ -12,16 +12,15 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import posixpath
 
-API_URL = "https://lm.hermitcrab.uk/v1/chat/completions"
-API_KEY = "sk-lm-bCXVCVv7:xEp0aFlihvp6LSxX6Jll"
-MODEL = "mistralai/devstral-small-2-2512"
+API_URL = "https://api.anthropic.com/v1/messages"
+API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+MODEL = "claude-haiku-4-5-20251001"
 
-SHELL_PATH = "shell-2.json"
-SEED_PATH = "seed-2.json"
+SHELL_PATH = "shell-3.json"
+SEED_PATH = "seed-3.json"
 SERVE_DIR = "./serve"
 HTTP_PORT = 8080
 
-# File lock for shell-2.json access
 _shell_lock = threading.Lock()
 _log_file = None
 
@@ -59,20 +58,20 @@ def save_block(block):
 def send_block(block, max_tokens=4000, temperature=0.7):
     payload = {
         "model": MODEL,
+        "max_tokens": max_tokens,
         "messages": [
-            {"role": "system", "content": "You are a JSON processor. You receive a JSON object. You return it updated. Return ONLY the JSON object. No markdown, no explanation, no code fences."},
             {"role": "user", "content": json.dumps(block)},
         ],
-        "max_tokens": max_tokens,
-        "temperature": temperature,
+        "system": "You are a JSON processor. You receive a JSON object. You return it updated. Return ONLY the JSON object. No markdown, no explanation, no code fences.",
     }
     headers = {
-        "Authorization": f"Bearer {API_KEY}",
+        "x-api-key": API_KEY,
+        "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
     }
-    resp = requests.post(API_URL, json=payload, headers=headers, timeout=120)
+    resp = requests.post(API_URL, json=payload, headers=headers, timeout=300)
     resp.raise_for_status()
-    return resp.json()["choices"][0]["message"]["content"]
+    return resp.json()["content"][0]["text"]
 
 
 def extract_json(text):
@@ -109,7 +108,7 @@ def is_pscale_valid(obj):
     return True
 
 
-# --- Tool executor ---
+# --- Tool executor (positional args) ---
 
 def safe_path(filename):
     """Resolve filename within SERVE_DIR. Reject escapes."""
@@ -119,74 +118,141 @@ def safe_path(filename):
     return os.path.join(SERVE_DIR, clean)
 
 
-def execute_tool(name, args_str):
-    """Execute a single tool. Returns (status, result)."""
-    try:
-        args = json.loads(args_str) if args_str else {}
-    except json.JSONDecodeError:
-        return "error", f"Invalid JSON args: {args_str}"
+def execute_tool(req):
+    """Execute a tool request. req is a dict with positional keys."""
+    name = req.get("1", "")
+    arg1 = req.get("2", "")
+    arg2 = req.get("3", "")
 
     if name == "write_file":
-        path = safe_path(args.get("path", ""))
+        path = safe_path(arg1)
         if path is None:
             return "error", "Invalid path"
         os.makedirs(os.path.dirname(path) or SERVE_DIR, exist_ok=True)
         with open(path, "w") as f:
-            f.write(args.get("content", ""))
-        return "done", f"written to {path}"
+            f.write(arg2)
+        return "done", f"written {arg1} ({len(arg2)} chars)"
 
     elif name == "read_file":
-        path = safe_path(args.get("path", ""))
+        path = safe_path(arg1)
         if path is None:
             return "error", "Invalid path"
         if not os.path.exists(path):
-            return "error", f"File not found: {path}"
+            return "error", f"not found: {arg1}"
         with open(path, "r") as f:
             content = f.read(2000)
         return "done", content
 
     elif name == "list_files":
-        if not os.path.exists(SERVE_DIR):
-            return "done", ""
-        files = os.listdir(SERVE_DIR)
-        return "done", ", ".join(sorted(files))
+        files = os.listdir(SERVE_DIR) if os.path.exists(SERVE_DIR) else []
+        return "done", ", ".join(sorted(files)) or "(empty)"
 
     else:
-        return "error", f"Unknown tool: {name}"
+        return "error", f"unknown tool: {name}"
 
 
 def execute_pending_tools(block):
-    """Scan key 8 for pending tool requests and execute them."""
+    """Scan key 8 for pending tool requests and execute them.
+
+    Handles two formats:
+    - Flat: 8.1 is a string (tool name), 8.2/8.3 are args, 8.4 is status
+    - Nested: 8.1 is a dict containing {1: name, 2: arg1, 3: arg2, 4: status}
+    """
     tools = block.get("8")
     if not isinstance(tools, dict):
         return
 
-    for key, req in tools.items():
+    # Check if flat format: 8.1 is a string (tool name directly)
+    first = tools.get("1")
+    if isinstance(first, str) and first and tools.get("4") not in ("done", "error"):
+        # Flat format — key 8 IS the request
+        name = first
+        log(f"Tool: {name}(arg1={str(tools.get('2',''))[:80]})")
+        try:
+            status, result = execute_tool(tools)
+        except Exception as e:
+            status, result = "error", str(e)
+        tools["4"] = status
+        tools["5"] = result
+        log(f"  -> {status}: {result[:120]}")
+        return
+
+    # Nested format — scan sub-keys for dicts
+    for key in sorted(tools.keys()):
         if key == "_":
             continue
+        req = tools[key]
         if not isinstance(req, dict):
             continue
-        if req.get("3") in ("done", "error"):
+        if req.get("4") in ("done", "error"):
             continue
 
         name = req.get("1", "")
-        args_str = req.get("2", "")
-        log(f"Tool: {name}({args_str[:80]})")
+        if not name:
+            continue
+
+        log(f"Tool: {name}(arg1={str(req.get('2',''))[:80]})")
 
         try:
-            status, result = execute_tool(name, args_str)
+            status, result = execute_tool(req)
         except Exception as e:
             status, result = "error", str(e)
 
-        req["3"] = status
-        req["4"] = result
+        req["4"] = status
+        req["5"] = result
         log(f"  -> {status}: {result[:120]}")
+
+
+def clean_tool_queue(block):
+    """Summarise executed tools into 8._, clear requests."""
+    tools = block.get("8")
+    if not isinstance(tools, dict):
+        return
+
+    summaries = []
+
+    # Check flat format: 8.1 is a string and 8.4 is done/error
+    first = tools.get("1")
+    if isinstance(first, str) and first and tools.get("4") in ("done", "error"):
+        name = first
+        status = tools.get("4", "?")
+        result = str(tools.get("5", ""))[:100]
+        summaries.append(f"{name}: {status} — {result}")
+    else:
+        # Nested format — scan sub-keys for dicts
+        for key in sorted(tools.keys()):
+            if key == "_":
+                continue
+            req = tools[key]
+            if isinstance(req, dict) and req.get("4") in ("done", "error"):
+                name = req.get("1", "?")
+                status = req.get("4", "?")
+                result = str(req.get("5", ""))[:100]
+                summaries.append(f"{name}: {status} — {result}")
+
+    # Clear all requests, write summary to _
+    block["8"] = {
+        "_": "; ".join(summaries) if summaries else "No tools used last cycle.",
+        "1": {"1": "", "2": "", "3": "", "4": "", "5": ""}
+    }
+
+
+def preserve_user_input(updated_block):
+    """If user input arrived during LLM processing, preserve it."""
+    with _shell_lock:
+        if os.path.exists(SHELL_PATH):
+            with open(SHELL_PATH, "r") as f:
+                current = json.load(f)
+            current_input = current.get("6", "")
+            if current_input and not updated_block.get("6"):
+                updated_block["6"] = current_input
+                log(f"Preserved user input: {current_input[:120]}")
 
 
 # --- HTTP server ---
 
 class MAGIHandler(SimpleHTTPRequestHandler):
-    """Serves ./serve/ as static files, /state as shell-2.json, /input as POST endpoint."""
+    """Serves ./serve/ as static files, /state as shell-3.json, /input as POST endpoint."""
 
     def do_GET(self):
         if self.path == "/state":
@@ -298,6 +364,17 @@ def start_http_server():
 
 def cycle():
     block = load_block()
+
+    # Execute pending tools and clean queue BEFORE sending to LLM
+    execute_pending_tools(block)
+    clean_tool_queue(block)
+    save_block(block)
+
+    # Shell size warning
+    shell_size = len(json.dumps(block))
+    if shell_size > 6000:  # ~1500 tokens
+        log(f"WARNING: shell is {shell_size} chars — content may be embedded instead of filed")
+
     try:
         raw = send_block(block)
     except Exception as e:
@@ -316,19 +393,15 @@ def cycle():
         log(f"REJECT: non-pscale keys: {bad_keys[:10]}")
         return
 
-    # Race condition fix: preserve user input that arrived during LLM call.
-    # The LLM's response has stale key 6. The current shell may have fresh input.
-    with _shell_lock:
-        if os.path.exists(SHELL_PATH):
-            with open(SHELL_PATH, "r") as f:
-                current_shell = json.load(f)
-            current_input = current_shell.get("6", "")
-            if current_input:
-                updated["6"] = current_input
-                log(f"Preserved user input: {current_input[:120]}")
+    # Restore immutable keys (_, 1, 2) from seed — LLM can only modify 3-9
+    with open(SEED_PATH, "r") as f:
+        seed = json.load(f)
+    for key in ("_", "1", "2"):
+        if key in seed:
+            updated[key] = seed[key]
 
-    # Execute any pending tool requests
-    execute_pending_tools(updated)
+    # Preserve user input that arrived during LLM call
+    preserve_user_input(updated)
 
     save_block(updated)
 
@@ -342,8 +415,8 @@ def cycle():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="MAGI kernel-2 — B-loop + tools + HTTP")
-    parser.add_argument("--interval", type=int, default=30, help="Sleep seconds between cycles")
+    parser = argparse.ArgumentParser(description="MAGI kernel-3 — B-loop + positional tools + hygiene + HTTP")
+    parser.add_argument("--interval", type=int, default=0, help="Sleep seconds between cycles (default: 0, no delay)")
     parser.add_argument("--cycles", type=int, default=0, help="Max cycles (0 = unlimited, Ctrl+C to stop)")
     args = parser.parse_args()
 
@@ -358,9 +431,9 @@ def main():
     http_thread.start()
 
     global _log_file
-    log_name = f"kernel2-{time.strftime('%Y%m%d-%H%M%S')}.log"
+    log_name = f"kernel3-{time.strftime('%Y%m%d-%H%M%S')}.log"
     _log_file = open(log_name, "w")
-    log(f"Kernel-2 starting. Interval: {interval}s. Cycles: {max_cycles or 'unlimited'}. Log: {log_name}")
+    log(f"Kernel-3 starting. Interval: {interval}s. Cycles: {max_cycles or 'unlimited'}. Log: {log_name}")
 
     n = 0
     while max_cycles == 0 or n < max_cycles:

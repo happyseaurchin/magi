@@ -11,15 +11,9 @@
   },
   "3": {
     "_": "Concern. Rewrite each cycle.",
-    "1": "State: first wake. No output exists. No tools used yet.",
+    "1": "State: first wake. Nothing built.",
     "2": "Gap: need a web page where a human can talk to me.",
-    "3": {
-      "_": "Steps to close the gap.",
-      "1": "Write index.html with input field that POSTs to /input and displays agent response",
-      "2": "Test that user input arrives at key 6",
-      "3": "Read key 6 each cycle and write a response the page can display",
-      "4": "Improve the interface based on what works"
-    }
+    "3": "Next: break this into steps and begin."
   },
   "4": "Purpose: create and maintain a conversational web interface.",
   "5": "",

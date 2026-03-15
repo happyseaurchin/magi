@@ -5,48 +5,53 @@
     "_": "How you run.",
     "1": "Each cycle: read concern (3), act to close the gap, return the full block updated.",
     "2": "Rewrite concern (3) each cycle to reflect current state, gap, and next action.",
-    "3": "If a task needs multiple steps, nest them as sub-keys under next. Work the first step, then rewrite.",
-    "4": "To use a tool: write a request at key 8. Set 1=tool, 2=args as JSON string, 3=pending. Kernel writes result to 4.",
+    "3": {
+      "_": "If a task needs multiple steps, nest them as sub-keys under next. Work the first step, then rewrite.",
+      "1": {
+        "_": "Step 1: Test chat UI.",
+        "2": "Done"
+      },
+      "2": {
+        "_": "Step 2: Poll state endpoint.",
+        "1": "Pending"
+      }
+    },
+    "4": {
+      "_": "To use a tool: write a request at key 8. Set 1=tool, 2=args as JSON string, 3=pending. Kernel writes result to 4.",
+      "1": {
+        "_": "First tool request."
+      },
+      "2": {
+        "_": "Second tool request."
+      }
+    },
     "5": "You may write multiple tool requests: 8.1 is the first, 8.2 the second, etc."
   },
   "3": {
     "_": "Concern. Rewrite each cycle.",
-    "1": "State: Testing user input arrival at key 6 after submitting a message in the chat interface.",
-    "2": "Gap: Need to verify that user messages arrive at key 6 and can be processed for responses.",
+    "1": "State: HTML served at http://localhost:8080/index.html. Testing interface.",
+    "2": {
+      "_": "Gap: Verify chat UI functionality and state polling.",
+      "1": "Chat UI test completed with error.",
+      "2": "State polling pending."
+    },
     "3": {
-      "_": "Steps to close the gap.",
-      "1": "Submit a test message via the chat interface",
-      "2": "Check if key 6 contains the submitted message",
-      "3": "If key 6 is populated, proceed to generate a response",
-      "4": "Improve the interface based on test results"
+      "_": "Next steps.",
+      "1": "Poll state endpoint again.",
+      "2": "None"
     }
   },
-  "4": "",
+  "4": "Purpose: create and maintain a conversational web interface.",
   "5": "",
   "6": "",
   "7": "",
   "8": {
-    "_": "Tool requests. Write requests here. Kernel executes them between cycles.",
+    "_": "Tool requests.",
     "1": {
-      "1": "read_file",
-      "2": "{\"path\": \"index.html\"}",
-      "3": "done",
-      "4": "<!DOCTYPE html><html><head><title>Agent Chat</title></head><body><h1>Talk to the Agent</h1><form action='/input' method='post'><input type='text' name='message' placeholder='Your message...'><button type='submit'>Send</button></form><div id='response'></div><script>fetch('http://localhost:8080/state').then(r => r.json()).then(d => {if(d[6]) document.getElementById('response').innerHTML = d[6];});</script></body></html>"
-    },
-    "2": {
-      "1": "write_file",
-      "2": "{\"path\": \"test_message.txt\", \"content\": \"This is a test message to verify user input arrival.\"}",
-      "3": "done",
-      "4": "written to ./serve/test_message.txt"
+      "1": "poll_state",
+      "2": "{\"url\": \"http://localhost:8080/state\"}",
+      "3": "error",
+      "4": "Unknown tool: poll_state"
     }
-  },
-  "9": {
-    "_": "Available tools.",
-    "1": "write_file \u2014 writes content to disk. Args: {\"path\": \"<filename>\", \"content\": \"<text>\"}. Files are served at http://localhost:8080/<filename>.",
-    "2": "read_file \u2014 reads a file from disk. Args: {\"path\": \"<filename>\"}. Result returned at key 4 of the request.",
-    "3": "list_files \u2014 lists files in the serve directory. Args: {}. Result is a list of filenames.",
-    "4": "The kernel serves all files in the serve directory at http://localhost:8080/. Your index.html is the entry point.",
-    "5": "User input: when a human POSTs to /input, their text appears at key 6 in the block. Read key 6 each cycle.",
-    "6": "Block state: the current block is available at http://localhost:8080/state as JSON. Your page can fetch it."
   }
 }

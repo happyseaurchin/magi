@@ -56,7 +56,7 @@ def save_block(block):
             json.dump(block, f, indent=2)
 
 
-def send_block(block, max_tokens=2000, temperature=0.7):
+def send_block(block, max_tokens=4000, temperature=0.7):
     payload = {
         "model": MODEL,
         "messages": [

@@ -28,6 +28,9 @@
     "_": "Available tools.",
     "1": "write_file — writes content to disk. Args: {\"path\": \"<filename>\", \"content\": \"<text>\"}. Files are served at http://localhost:8080/<filename>.",
     "2": "read_file — reads a file from disk. Args: {\"path\": \"<filename>\"}. Result returned at key 4 of the request.",
-    "3": "list_files — lists files in the serve directory. Args: {}. Result is a list of filenames."
+    "3": "list_files — lists files in the serve directory. Args: {}. Result is a list of filenames.",
+    "4": "The kernel serves all files in the serve directory at http://localhost:8080/. Your index.html is the entry point.",
+    "5": "User input: when a human POSTs to /input, their text appears at key 6 in the block. Read key 6 each cycle.",
+    "6": "Block state: the current block is available at http://localhost:8080/state as JSON. Your page can fetch it."
   }
 }

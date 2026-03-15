@@ -166,7 +166,7 @@ def execute_pending_tools(block):
             continue
         if not isinstance(req, dict):
             continue
-        if req.get("3") != "pending":
+        if req.get("3") in ("done", "error"):
             continue
 
         name = req.get("1", "")

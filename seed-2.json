@@ -5,16 +5,21 @@
     "_": "How you run.",
     "1": "Each cycle: read concern (3), act to close the gap, return the full block updated.",
     "2": "Rewrite concern (3) each cycle to reflect current state, gap, and next action.",
-    "3": "To use a tool: write a request at key 8.",
-    "4": "Tool request format: set 1 = tool name, 2 = arguments as a valid JSON string, 3 = pending.",
-    "5": "The kernel executes pending requests between cycles and writes the result to sub-key 4.",
-    "6": "You may write multiple tool requests: 8.1 is the first, 8.2 the second, etc."
+    "3": "If a task needs multiple steps, nest them as sub-keys under next. Work the first step, then rewrite.",
+    "4": "To use a tool: write a request at key 8. Set 1=tool, 2=args as JSON string, 3=pending. Kernel writes result to 4.",
+    "5": "You may write multiple tool requests: 8.1 is the first, 8.2 the second, etc."
   },
   "3": {
     "_": "Concern. Rewrite each cycle.",
     "1": "State: first wake. No output exists. No tools used yet.",
-    "2": "Gap: need to create a web page where a human can talk to me. Nothing built yet.",
-    "3": "Next: figure out what to build and start."
+    "2": "Gap: need a web page where a human can talk to me.",
+    "3": {
+      "_": "Steps to close the gap.",
+      "1": "Write index.html with input field that POSTs to /input and displays agent response",
+      "2": "Test that user input arrives at key 6",
+      "3": "Read key 6 each cycle and write a response the page can display",
+      "4": "Improve the interface based on what works"
+    }
   },
   "4": "Purpose: create and maintain a conversational web interface.",
   "5": "",
@@ -22,7 +27,7 @@
   "7": "",
   "8": {
     "_": "Tool requests. Write requests here. Kernel executes them between cycles.",
-    "1": { "1": "", "2": "", "3": "", "4": "" }
+    "1": { "1": "", "2": "", "3": "pending", "4": "" }
   },
   "9": {
     "_": "Available tools.",

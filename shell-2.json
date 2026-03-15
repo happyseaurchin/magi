@@ -12,9 +12,9 @@
   },
   "3": {
     "_": "Concern. Rewrite each cycle.",
-    "1": "State: server.js file content read successfully.",
-    "2": "Gap: need to start the server and test message processing.",
-    "3": "Next: execute server.js and send a test POST request."
+    "1": "State: tool request for list_files is pending, need to verify index.html and /state endpoint.",
+    "2": "Gap: confirm file listing results, test /state endpoint functionality.",
+    "3": "Next: check tool request results (8.2.4), then verify /state endpoint."
   },
   "4": "Purpose: create and maintain a conversational web interface.",
   "5": "",
@@ -23,16 +23,23 @@
   "8": {
     "_": "Tool requests. Write requests here. Kernel executes them between cycles.",
     "1": {
-      "1": "execute_command",
-      "2": "{\"command\": \"node server.js\"}",
-      "3": "error",
-      "4": "Unknown tool: execute_command"
+      "1": "read_file",
+      "2": "{\"path\": \"index.html\"}",
+      "3": ""
     },
     "2": {
-      "1": "send_http_request",
-      "2": "{\"method\": \"POST\", \"url\": \"http://localhost:8081/chat\", \"body\": \"{\\\"message\\\": \\\"Hello, World!\\\"}\", \"headers\": {\"Content-Type\": \"application/json\"}}",
-      "3": "error",
-      "4": "Unknown tool: send_http_request"
+      "1": "list_files",
+      "2": "",
+      "3": ""
     }
+  },
+  "9": {
+    "_": "Available tools.",
+    "1": "write_file \u2014 writes content to disk. Args: {\"path\": \"<filename>\", \"content\": \"<text>\"}. Files are served at http://localhost:8080/<filename>.",
+    "2": "read_file \u2014 reads a file from disk. Args: {\"path\": \"<filename>\"}. Result returned at key 4 of the request.",
+    "3": "list_files \u2014 lists files in the serve directory. Args: {}. Result is a list of filenames.",
+    "4": "The kernel serves all files in the serve directory at http://localhost:8080/. Your index.html is the entry point.",
+    "5": "User input: when a human POSTs to /input, their text appears at key 6 in the block. Read key 6 each cycle.",
+    "6": "Block state: the current block is available at http://localhost:8080/state as JSON. Your page can fetch it."
   }
 }
